@@ -12,6 +12,8 @@ sfdx force:auth:jwt:grant --instanceurl="$SF_INSTANCE_URL" --clientid="$SF_CLIEN
 
 cd $current_dir
 
+git checkout $GITHUB_BRANCH
+
 sfdx force:mdapi:retrieve -r ./ -u $SFDX_ORG -k ./package.xml -w 20
 
 if [ ! -f "unpackaged.zip" ]; then
@@ -31,6 +33,7 @@ rm unpackaged.zip
 
 mv ./unpackaged ./metadata
 
+git checkout $GITHUB_BRANCH
 git add .
 git commit -a -m "Daily iSales metadata backup"
 git push
