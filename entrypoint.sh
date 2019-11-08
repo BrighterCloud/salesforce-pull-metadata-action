@@ -12,9 +12,7 @@ sfdx force:auth:jwt:grant --instanceurl="$SF_INSTANCE_URL" --clientid="$SF_CLIEN
 
 cd $current_dir
 
-git checkout $GITHUB_BRANCH
-
-sfdx force:mdapi:retrieve -r ./ -u $SFDX_ORG -k ./package.xml -w 20
+sfdx force:mdapi:retrieve -r ./ -u sfLogin -k ./package.xml -w 20
 
 if [ ! -f "unpackaged.zip" ]; then
   echo "failed to download metadata file"
