@@ -30,7 +30,3 @@ unzip unpackaged.zip
 rm unpackaged.zip
 
 mv ./unpackaged ./metadata
-
-git add .
-git commit -a -m "Daily iSales metadata backup"
-git push

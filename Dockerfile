@@ -1,9 +1,9 @@
 FROM node:alpine
 
-LABEL "com.github.actions.name"="Salesforce Backup to Github"
-LABEL "com.github.actions.description"="Fetches Metadata from a Salesforce System and Checks it into Github"
+LABEL "com.github.actions.name"="Backup Metadata from Salesforce"
+LABEL "com.github.actions.description"="Fetches Metadata from a Salesforce System"
 
-LABEL "repository"="https://github.com/BrighterCloud/salesforce-backup-to-github-action"
+LABEL "repository"="https://github.com/BrighterCloud/salesforce-pull-metadata-action"
 
 # install git ca-certificates openssl openssh for CircleCI
 # install jq for JSON parsing
