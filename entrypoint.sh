@@ -31,7 +31,6 @@ rm unpackaged.zip
 
 mv ./unpackaged ./metadata
 
-git checkout $GITHUB_BRANCH
 git add .
 git commit -a -m "Daily iSales metadata backup"
 git push
