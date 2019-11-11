@@ -35,11 +35,17 @@ rm unpackaged.zip
 
 mv ./unpackaged ./metadata
 
+echo "Fetching ApexClass Changes"
 sfdx force:data:soql:query -q "SELECT LastModifiedDate,Name,LastModifiedBy.Name FROM ApexClass ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changesApexClass.json
+echo "Fetching ApexComponent Changes"
 sfdx force:data:soql:query -q "SELECT LastModifiedDate,Name,LastModifiedBy.Name FROM ApexComponent ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changesApexComponent.json
+echo "Fetching ApexPage Changes"
 sfdx force:data:soql:query -q "SELECT LastModifiedDate,Name,LastModifiedBy.Name FROM ApexPage ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changesApexPage.json
+echo "Fetching ApexTrigger Changes"
 sfdx force:data:soql:query -q "SELECT LastModifiedDate,Name,LastModifiedBy.Name FROM ApexTrigger ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changesApexTrigger.json
-sfdx force:data:soql:query -q "SELECT LastModifiedDate,DeveloperName,LastModifiedBy.Name FROM AuraDefinitionBundle ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changes changesAuraDefinitionBundle.json
+echo "Fetching AuraDefinitionBundle Changes"
+sfdx force:data:soql:query -q "SELECT LastModifiedDate,DeveloperName,LastModifiedBy.Name FROM AuraDefinitionBundle ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changesAuraDefinitionBundle.json
+echo "Fetching StaticResource Changes"
 sfdx force:data:soql:query -q "SELECT LastModifiedDate,Name,LastModifiedBy.Name FROM StaticResource ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changesStaticResource.json
 
 node ./commitChanges.js
