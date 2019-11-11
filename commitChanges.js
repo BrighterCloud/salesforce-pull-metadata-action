@@ -64,8 +64,7 @@ function getExtensionFromType(type) {
     }
 }
 
-async function addChange(change) {
-    var currentFile = path.join("./metadata", getPathFromType(change.type), change.Name + getExtensionFromType(change.type));
+async function addChange(change, currentFile) {
     switch(change.type) {
         case "AuraDefinitionBundle":
             console.log("git add " + currentFile);
@@ -83,10 +82,13 @@ async function addChange(change) {
 async function commitChanges() {
     for (var change of allChanges) {
         try {
-            await exec('git config --local user.email "action@github.com" && git config --local user.name "' + change.LastModifiedBy.Name + '"');
-            await addChange(change);
-            console.log('git commit -m "Change from ' + change.LastModifiedBy.Name + ' on ' + change.LastModifiedDate + '"')
-            await exec('git commit -m "Change from ' + change.LastModifiedBy.Name + ' on ' + change.LastModifiedDate + '"');
+            var currentFile = path.join("./metadata", getPathFromType(change.type), change.Name + getExtensionFromType(change.type));
+            if (fs.existsSync(currentFile)) {
+                await exec('git config --local user.email "action@github.com" && git config --local user.name "' + change.LastModifiedBy.Name + '"');
+                await addChange(change, currentFile);
+                console.log('git commit -m "Change from ' + change.LastModifiedBy.Name + ' on ' + change.LastModifiedDate + '"')
+                await exec('git commit -m "Change from ' + change.LastModifiedBy.Name + ' on ' + change.LastModifiedDate + '"');
+            }
         } catch (e) {
             console.error(e);
             process.exit(-1);
