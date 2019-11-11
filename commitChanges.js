@@ -80,9 +80,15 @@ async function addChange(change) {
 
 async function commitChanges() {
     for (var change of allChanges) {
-        await exec('git config --local user.email "action@github.com" && git config --local user.name "' + change.LastModifiedBy.Name + '"');
-        await addChange(change);
-        await exec('git commit -m "Change from ' + change.LastModifiedBy.Name + ' on ' + change.LastModifiedDate + '"');
+        try {
+            await exec('git config --local user.email "action@github.com" && git config --local user.name "' + change.LastModifiedBy.Name + '"');
+            await addChange(change);
+            await exec('git commit -m "Change from ' + change.LastModifiedBy.Name + ' on ' + change.LastModifiedDate + '"');
+        } catch (e) {
+            console.error(e);
+            process.exit(-1);
+            break;
+        }
     }
     process.exit(0);
 }
