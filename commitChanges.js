@@ -18,9 +18,9 @@ var allChanges = changesApexClass.concat(changesApexComponent)
 
 allChanges.sort(function(a, b) {
     if (a.LastModifiedDate > b.LastModifiedDate) {
-        return -1;
-    } else if (a.LastModifiedDate < b.LastModifiedDate) {
         return 1;
+    } else if (a.LastModifiedDate < b.LastModifiedDate) {
+        return -1;
     } else {
         return 0;
     }
@@ -67,7 +67,7 @@ function getExtensionFromType(type) {
 
 async function addChange(change) {
     var currentFile = path.join("./metadata", getPathFromType(change.type), change.Name + getExtensionFromType(change.type));
-    switch(type) {
+    switch(change.type) {
         case "AuraDefinitionBundle":
             await exec('git add ' + currentFile);
             break;
