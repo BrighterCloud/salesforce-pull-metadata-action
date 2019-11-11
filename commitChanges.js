@@ -31,7 +31,7 @@ function removeDuplicates(originalArray, prop1, prop2) {
     var lookupObject  = {};
 
     for(var i in originalArray) {
-       lookupObject[originalArray[i][prop1 + "-" + prop2]] = originalArray[i];
+       lookupObject[originalArray[i][prop1] + "-" + originalArray[i][prop2]] = originalArray[i];
     }
 
     for(i in lookupObject) {
