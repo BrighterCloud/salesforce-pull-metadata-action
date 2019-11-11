@@ -16,6 +16,7 @@ RUN sfdx plugins --core
 
 ADD entrypoint.sh /action/entrypoint.sh
 ADD writeKey.js /action/writeKey.js
+ADD commitChanges.js /action/commitChanges.js
 
 RUN chmod +x /action/entrypoint.sh
 

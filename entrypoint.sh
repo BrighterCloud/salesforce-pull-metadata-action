@@ -34,3 +34,12 @@ unzip unpackaged.zip
 rm unpackaged.zip
 
 mv ./unpackaged ./metadata
+
+sfdx force:data:soql:query -q "SELECT LastModifiedDate,Name,LastModifiedBy.Name FROM ApexClass ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changesApexClass.json
+sfdx force:data:soql:query -q "SELECT LastModifiedDate,Name,LastModifiedBy.Name FROM ApexComponent ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changesApexComponent.json
+sfdx force:data:soql:query -q "SELECT LastModifiedDate,Name,LastModifiedBy.Name FROM ApexPage ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changesApexPage.json
+sfdx force:data:soql:query -q "SELECT LastModifiedDate,Name,LastModifiedBy.Name FROM ApexTrigger ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changesApexTrigger.json
+sfdx force:data:soql:query -q "SELECT LastModifiedDate,DeveloperName,LastModifiedBy.Name FROM AuraDefinitionBundle ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changes changesAuraDefinitionBundle.json
+sfdx force:data:soql:query -q "SELECT LastModifiedDate,Name,LastModifiedBy.Name FROM StaticResource ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changesStaticResource.json
+
+node ./commitChanges.js
