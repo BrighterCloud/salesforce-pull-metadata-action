@@ -78,8 +78,13 @@ async function addChange(change) {
     }
 }
 
-for (var change of allChanges) {
-    await exec('git config --local user.email "action@github.com" && git config --local user.name "' + change.LastModifiedBy.Name + '"');
-    await addChange(change);
-    await exec('git commit -m "Change from ' + change.LastModifiedBy.Name + ' on ' + change.LastModifiedDate + '"');
+async function commitChanges() {
+    for (var change of allChanges) {
+        await exec('git config --local user.email "action@github.com" && git config --local user.name "' + change.LastModifiedBy.Name + '"');
+        await addChange(change);
+        await exec('git commit -m "Change from ' + change.LastModifiedBy.Name + ' on ' + change.LastModifiedDate + '"');
+    }
+    process.exit(0);
 }
+
+commitChanges();
