@@ -48,4 +48,4 @@ sfdx force:data:soql:query -q "SELECT LastModifiedDate,DeveloperName,LastModifie
 echo "Fetching StaticResource Changes"
 sfdx force:data:soql:query -q "SELECT LastModifiedDate,Name,LastModifiedBy.Name FROM StaticResource ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changesStaticResource.json
 
-node ./commitChanges.js
+node /action/commitChanges.js
