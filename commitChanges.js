@@ -25,7 +25,6 @@ allChanges.sort(function(a, b) {
         return 0;
     }
 });
-console.log(JSON.stringify(allChanges));
 
 function getPathFromType(type) {
     switch(type) {
@@ -40,7 +39,7 @@ function getPathFromType(type) {
         case "AuraDefinitionBundle":
             return "aura"
         case "StaticResource":
-            return "staticresourcs";
+            return "staticresources";
         default:
             throw new Error("unknown change type: " + type);
     }
@@ -69,10 +68,13 @@ async function addChange(change) {
     var currentFile = path.join("./metadata", getPathFromType(change.type), change.Name + getExtensionFromType(change.type));
     switch(change.type) {
         case "AuraDefinitionBundle":
+            console.log("git add " + currentFile);
             await exec('git add ' + currentFile);
             break;
         default:
+            console.log("git add " + currentFile);
             await exec('git add ' + currentFile);
+            console.log("git add " + currentFile + "-meta.xml");
             await exec('git add ' + currentFile + "-meta.xml");
             break;
     }
@@ -83,6 +85,7 @@ async function commitChanges() {
         try {
             await exec('git config --local user.email "action@github.com" && git config --local user.name "' + change.LastModifiedBy.Name + '"');
             await addChange(change);
+            console.log('git commit -m "Change from ' + change.LastModifiedBy.Name + ' on ' + change.LastModifiedDate + '"')
             await exec('git commit -m "Change from ' + change.LastModifiedBy.Name + ' on ' + change.LastModifiedDate + '"');
         } catch (e) {
             console.error(e);
