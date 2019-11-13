@@ -105,6 +105,8 @@ async function commitChanges() {
                 await addChange(change, currentFile);
                 console.log('git commit -m "Change from ' + change.LastModifiedBy.Name + ' on ' + change.LastModifiedDate + '"')
                 await exec('git commit -m "Change from ' + change.LastModifiedBy.Name + ' on ' + change.LastModifiedDate + '"');
+            } else {
+                console.log("File was already deleted: " + currentFile);
             }
         } catch (e) {
             console.error(e);
