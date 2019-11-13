@@ -99,7 +99,7 @@ async function commitChanges() {
     console.log("Found " + allChanges.length + " changes since ever");
     for (var change of allChanges) {
         try {
-            var currentFile = path.join("./metadata", getPathFromType(change.type), change.Name + getExtensionFromType(change.type));
+            var currentFile = path.join("/github/workspace/metadata", getPathFromType(change.type), change.Name + getExtensionFromType(change.type));
             if (fs.existsSync(currentFile)) {
                 await exec('git config --local user.email "action@github.com" && git config --local user.name "' + change.LastModifiedBy.Name + '"');
                 await addChange(change, currentFile);
