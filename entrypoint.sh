@@ -23,7 +23,7 @@ if [ ! -f "unpackaged.zip" ]; then
   exit 1
 fi
 
-rm -rf ./metadata/*
+rm -rf ./metadata
 
 if [ -d "unpackaged" ]; then
   rm -r ./unpackaged
