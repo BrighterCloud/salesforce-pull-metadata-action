@@ -96,6 +96,7 @@ async function addChange(change, currentFile) {
 }
 
 async function commitChanges() {
+    console.log("Found " + allChanges.length + " changes since ever");
     for (var change of allChanges) {
         try {
             var currentFile = path.join("./metadata", getPathFromType(change.type), change.Name + getExtensionFromType(change.type));
