@@ -109,7 +109,9 @@ async function commitChanges() {
                 console.log("File was already deleted: " + currentFile);
             }
         } catch (e) {
-            if (e.message.indexOf("no changes added to commit") < 0) {
+            if (e.stdout && e.stdout.indexOf("no changes added to commit") >= 0) {
+                continue;
+            } else {
                 console.error(e);
                 process.exit(-1);
                 break;
