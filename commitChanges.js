@@ -103,15 +103,17 @@ async function commitChanges() {
             if (fs.existsSync(currentFile)) {
                 await exec('git config --local user.email "action@github.com" && git config --local user.name "' + change.LastModifiedBy.Name + '"');
                 await addChange(change, currentFile);
-                console.log('git commit -m "Change from ' + change.LastModifiedBy.Name + ' on ' + change.LastModifiedDate + '"')
                 await exec('git commit -m "Change from ' + change.LastModifiedBy.Name + ' on ' + change.LastModifiedDate + '"');
+                console.log('git commit -m "Change from ' + change.LastModifiedBy.Name + ' on ' + change.LastModifiedDate + '"')
             } else {
                 console.log("File was already deleted: " + currentFile);
             }
         } catch (e) {
-            console.error(e);
-            process.exit(-1);
-            break;
+            if (e.message.indexOf("no changes added to commit") < 0) {
+                console.error(e);
+                process.exit(-1);
+                break;
+            }
         }
     }
     process.exit(0);
