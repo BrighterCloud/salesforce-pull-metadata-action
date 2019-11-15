@@ -76,7 +76,7 @@ function getExtensionFromType(type) {
         case "ApexTrigger":
             return ".trigger";
         case "AuraDefinitionBundle":
-            return "/";
+            return "/*";
         case "StaticResource":
             return ".resource";
         case "FlowDefinition":
