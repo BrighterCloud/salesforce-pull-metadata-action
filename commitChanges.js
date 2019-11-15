@@ -11,6 +11,8 @@ var changesAuraDefinitionBundle = JSON.parse(fs.readFileSync("changesAuraDefinit
 var changesStaticResource = JSON.parse(fs.readFileSync("changesStaticResource.json", "utf8")).result.records.map(function(change) { change.type = "StaticResource"; return change; });
 var changesFlowDefinitions = JSON.parse(fs.readFileSync("changesFlowDefinitions.json", "utf8")).result.records.map(function(change) { change.type = "FlowDefinition"; return change; });
 
+console.log("Flow Changes: " + JSON.stringify(changesFlowDefinitions));
+
 var allChanges = changesApexClass.concat(changesApexComponent)
                                  .concat(changesApexPage)
                                  .concat(changesApexTrigger)
@@ -121,7 +123,7 @@ async function commitChanges() {
     console.log("Found " + allChanges.length + " changes since ever");
     for (var change of allChanges) {
         try {
-            var currentFile = path.join("/github/workspace/metadata", getPathFromType(change.type), change.Name || change.ApiName + getExtensionFromType(change.type));
+            var currentFile = path.join("/github/workspace/metadata", getPathFromType(change.type), (change.Name || change.ApiName) + getExtensionFromType(change.type));
             if (exists(currentFile)) {
                 await exec('git config --local user.email "action@github.com" && git config --local user.name "' + getLastModifiedName(change.LastModifiedBy) + '"');
                 await addChange(change, currentFile);
