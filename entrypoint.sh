@@ -4,6 +4,12 @@ echo $(date)
 
 echo "current working directory is " $PWD
 
+if [ -n "$TARGET_BRANCH" ]; then
+  git push -d origin $TARGET_BRANCH
+  git branch -d $TARGET_BRANCH
+  git checkout -b $TARGET_BRANCH
+fi
+
 export current_dir=$PWD
 cd /action
 node writeKey.js
