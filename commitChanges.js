@@ -9,12 +9,14 @@ var changesApexPage = JSON.parse(fs.readFileSync("changesApexPage.json", "utf8")
 var changesApexTrigger = JSON.parse(fs.readFileSync("changesApexTrigger.json", "utf8")).result.records.map(function(change) { change.type = "ApexTrigger"; return change; });
 var changesAuraDefinitionBundle = JSON.parse(fs.readFileSync("changesAuraDefinitionBundle.json", "utf8")).result.records.map(function(change) { change.type = "AuraDefinitionBundle"; return change; });
 var changesStaticResource = JSON.parse(fs.readFileSync("changesStaticResource.json", "utf8")).result.records.map(function(change) { change.type = "StaticResource"; return change; });
+var changesFlowDefinitions = JSON.parse(fs.readFileSync("changesFlowDefinitions.json", "utf8")).result.records.map(function(change) { change.type = "FlowDefinition"; return change; });
 
 var allChanges = changesApexClass.concat(changesApexComponent)
                                  .concat(changesApexPage)
                                  .concat(changesApexTrigger)
                                  .concat(changesAuraDefinitionBundle)
-                                 .concat(changesStaticResource);
+                                 .concat(changesStaticResource)
+                                 .concat(changesFlowDefinitions);
 
 allChanges.sort(function(a, b) {
     if (a.LastModifiedDate > b.LastModifiedDate) {
@@ -56,6 +58,8 @@ function getPathFromType(type) {
             return "aura"
         case "StaticResource":
             return "staticresources";
+        case "FlowDefinition":
+            return "flows";
         default:
             throw new Error("unknown change type: " + type);
     }
@@ -72,9 +76,11 @@ function getExtensionFromType(type) {
         case "ApexTrigger":
             return ".trigger";
         case "AuraDefinitionBundle":
-            return "/*";
+            return "/";
         case "StaticResource":
             return ".resource";
+        case "FlowDefinition":
+            return ".flow";
         default:
             throw new Error("unknown change type: " + type);
     }
@@ -83,6 +89,7 @@ function getExtensionFromType(type) {
 async function addChange(change, currentFile) {
     switch(change.type) {
         case "AuraDefinitionBundle":
+        case "FlowDefinition":
             console.log("git add " + currentFile);
             await exec('git add ' + currentFile);
             break;
@@ -95,12 +102,19 @@ async function addChange(change, currentFile) {
     }
 }
 
+function exists(currentPath) {
+    if (currentPath[currentPath.length - 1] === "*") {
+        currentPath = currentPath.substr(0, currentPath.length - 1);
+    }
+    return fs.existsSync(currentPath);
+}
+
 async function commitChanges() {
     console.log("Found " + allChanges.length + " changes since ever");
     for (var change of allChanges) {
         try {
             var currentFile = path.join("/github/workspace/metadata", getPathFromType(change.type), change.Name + getExtensionFromType(change.type));
-            if (fs.existsSync(currentFile)) {
+            if (exists(currentFile)) {
                 await exec('git config --local user.email "action@github.com" && git config --local user.name "' + change.LastModifiedBy.Name + '"');
                 await addChange(change, currentFile);
                 await exec('git commit -m "Change from ' + change.LastModifiedBy.Name + ' on ' + change.LastModifiedDate + '"');

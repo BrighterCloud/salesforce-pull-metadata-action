@@ -54,5 +54,7 @@ echo "Fetching AuraDefinitionBundle Changes"
 sfdx force:data:soql:query -q "SELECT LastModifiedDate,DeveloperName,LastModifiedBy.Name FROM AuraDefinitionBundle ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changesAuraDefinitionBundle.json
 echo "Fetching StaticResource Changes"
 sfdx force:data:soql:query -q "SELECT LastModifiedDate,Name,LastModifiedBy.Name FROM StaticResource ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changesStaticResource.json
+echo "Fetching FlowDefinition Changes"
+sfdx force:data:soql:query -q "SELECT LastModifiedDate,ApiName,LastModifiedBy FROM FlowDefinitionView ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changesFlowDefinitions.json
 
 node /action/commitChanges.js
