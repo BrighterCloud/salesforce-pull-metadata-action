@@ -5,6 +5,7 @@ echo $(date)
 echo "current working directory is " $PWD
 
 if [ -n "$TARGET_BRANCH" ]; then
+  git config --local user.email "action@github.com" && git config --local user.name "GithubActions"
   git push -d origin $TARGET_BRANCH
   git branch -d $TARGET_BRANCH
   git checkout -b $TARGET_BRANCH
