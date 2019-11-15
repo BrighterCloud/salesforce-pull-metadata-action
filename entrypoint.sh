@@ -6,8 +6,8 @@ echo "current working directory is " $PWD
 
 if [ -n "$TARGET_BRANCH" ]; then
   git config --local user.email "action@github.com" && git config --local user.name "GithubActions"
-  git push -d origin $TARGET_BRANCH
-  git branch -d $TARGET_BRANCH
+  remote_repo="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+  git push "${remote_repo}" --delete $TARGET_BRANCH
   git checkout -b $TARGET_BRANCH
 fi
 
