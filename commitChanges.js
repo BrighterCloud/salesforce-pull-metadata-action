@@ -109,16 +109,24 @@ function exists(currentPath) {
     return fs.existsSync(currentPath);
 }
 
+function getLastModifiedName(lastModifiedBy) {
+    if (lastModifiedBy.Name) {
+        return lastModifiedBy.Name;
+    } else {
+        return lastModifiedBy;
+    }
+}
+
 async function commitChanges() {
     console.log("Found " + allChanges.length + " changes since ever");
     for (var change of allChanges) {
         try {
-            var currentFile = path.join("/github/workspace/metadata", getPathFromType(change.type), change.Name + getExtensionFromType(change.type));
+            var currentFile = path.join("/github/workspace/metadata", getPathFromType(change.type), change.Name || change.ApiName + getExtensionFromType(change.type));
             if (exists(currentFile)) {
-                await exec('git config --local user.email "action@github.com" && git config --local user.name "' + change.LastModifiedBy.Name + '"');
+                await exec('git config --local user.email "action@github.com" && git config --local user.name "' + getLastModifiedName(change.LastModifiedBy) + '"');
                 await addChange(change, currentFile);
-                await exec('git commit -m "Change from ' + change.LastModifiedBy.Name + ' on ' + change.LastModifiedDate + '"');
-                console.log('git commit -m "Change from ' + change.LastModifiedBy.Name + ' on ' + change.LastModifiedDate + '"')
+                await exec('git commit -m "Change from ' + getLastModifiedName(change.LastModifiedBy) + ' on ' + change.LastModifiedDate + '"');
+                console.log('git commit -m "Change from ' + getLastModifiedName(change.LastModifiedBy) + ' on ' + change.LastModifiedDate + '"')
             } else {
                 console.log("File was already deleted: " + currentFile);
             }
