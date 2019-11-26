@@ -90,14 +90,14 @@ async function addChange(change, currentFile) {
     switch(change.type) {
         case "AuraDefinitionBundle":
         case "FlowDefinition":
-            console.log("git add " + currentFile);
-            await exec('git add ' + currentFile);
+            console.log("git add -a " + currentFile);
+            await exec('git add -a ' + currentFile);
             break;
         default:
-            console.log("git add " + currentFile);
-            await exec('git add ' + currentFile);
-            console.log("git add " + currentFile + "-meta.xml");
-            await exec('git add ' + currentFile + "-meta.xml");
+            console.log("git add -a " + currentFile);
+            await exec('git add -a ' + currentFile);
+            console.log("git add -a " + currentFile + "-meta.xml");
+            await exec('git add -a ' + currentFile + "-meta.xml");
             break;
     }
 }
