@@ -90,14 +90,14 @@ async function addChange(change, currentFile) {
     switch(change.type) {
         case "AuraDefinitionBundle":
         case "FlowDefinition":
-            console.log("git add -a " + currentFile);
-            await exec('git add -a ' + currentFile);
+            console.log("git add " + currentFile);
+            await exec('git add ' + currentFile);
             break;
         default:
-            console.log("git add -a " + currentFile);
-            await exec('git add -a ' + currentFile);
-            console.log("git add -a " + currentFile + "-meta.xml");
-            await exec('git add -a ' + currentFile + "-meta.xml");
+            console.log("git add " + currentFile);
+            await exec('git add ' + currentFile);
+            console.log("git add " + currentFile + "-meta.xml");
+            await exec('git add ' + currentFile + "-meta.xml");
             break;
     }
 }
@@ -140,6 +140,14 @@ async function commitChanges() {
                 break;
             }
         }
+    }
+    try {
+        console.log("git add untracked files");
+        await exec('git add .');
+        console.log('git commit -m "Committing untracked/deleted files"');
+        await exec('git commit -m "Committing untracked/deleted files"');
+    } catch (e) {
+        console.log("Failed to commit untracked/deleted files");
     }
     process.exit(0);
 }
