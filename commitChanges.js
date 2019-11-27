@@ -143,7 +143,7 @@ async function commitChanges() {
     }
     try {
         console.log("git add untracked files");
-        await exec('git add .');
+        await exec('git add /github/workspace/metadata/*');
         console.log('git commit -m "Committing untracked/deleted files"');
         await exec('git commit -m "Committing untracked/deleted files"');
     } catch (e) {
