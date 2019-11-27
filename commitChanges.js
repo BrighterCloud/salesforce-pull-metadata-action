@@ -142,6 +142,7 @@ async function commitChanges() {
         }
     }
     try {
+        await exec('git config --local user.email "action@github.com" && git config --local user.name "Github Action"');
         console.log("git add untracked files");
         await exec('git add /github/workspace/metadata/*');
         console.log('git commit -m "Committing untracked/deleted files"');
