@@ -10,7 +10,10 @@ LABEL "repository"="https://github.com/BrighterCloud/salesforce-pull-metadata-ac
 RUN apk add --update --no-cache git openssh ca-certificates openssl jq gettext xmlstarlet curl
 
 # install latest sfdx from npm
-RUN npm install sfdx-cli --global
+RUN wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
+RUN mkdir sfdx
+RUN tar xJf sfdx-linux-amd64.tar.xz -C sfdx --strip-components 1
+RUN ./sfdx/install
 RUN sfdx --version
 RUN sfdx plugins --core
 
