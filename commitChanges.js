@@ -123,6 +123,8 @@ async function addChange(change, currentFile) {
         case "AuraDefinitionBundle":
         case "FlowDefinition":
         case "FlexiPage":
+        case "PermissionSet":
+        case "Profile":
         case "LWC":
             console.log("git add " + currentFile);
             await exec('git add ' + currentFile);
