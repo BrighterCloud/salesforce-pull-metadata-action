@@ -12,11 +12,11 @@ var changesStaticResource = JSON.parse(fs.readFileSync("changesStaticResource.js
 var changesFlowDefinitions = JSON.parse(fs.readFileSync("changesFlowDefinitions.json", "utf8")).result.records.map(function(change) { change.Name = change.ApiName; change.type = "FlowDefinition"; return change; });
 
 
-var changesFlexiPages = JSON.parse(fs.readFileSync("changesFlexiPages.json", "utf8")).result.records.map(function(change) { change.Name = change.fullName; change.type = "FlexiPage"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = changelastModifiedDate; return change; });
-var changesLWC = JSON.parse(fs.readFileSync("changesLWC.json", "utf8")).result.records.map(function(change) { change.Name = change.fullName; change.type = "LWC"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = changelastModifiedDate; return change; });
+var changesFlexiPages = JSON.parse(fs.readFileSync("changesFlexiPages.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "FlexiPage"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = changelastModifiedDate; return change; });
+var changesLWC = JSON.parse(fs.readFileSync("changesLWC.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "LWC"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = changelastModifiedDate; return change; });
 var changesProfile = JSON.parse(fs.readFileSync("changesProfile.json", "utf8")).result.records.map(function(change) { change.type = "Profile"; return change; });
 var changesPermissionSet = JSON.parse(fs.readFileSync("changesPermissionSet.json", "utf8")).result.records.map(function(change) { change.type = "PermissionSet"; return change; });
-var changesValidationRules = JSON.parse(fs.readFileSync("changesValidationRules.json", "utf8")).result.records.map(function(change) { change.Name = change.fullName; change.type = "ValidationRule"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = changelastModifiedDate; return change; });
+var changesValidationRules = JSON.parse(fs.readFileSync("changesValidationRules.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "ValidationRule"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = changelastModifiedDate; return change; });
 
 var allChanges = changesApexClass.concat(changesApexComponent)
                                  .concat(changesApexPage)
