@@ -59,14 +59,14 @@ sfdx force:data:soql:query -q "SELECT LastModifiedDate,ApiName,LastModifiedBy FR
 
 
 echo "Fetching FlexiPage Changes"
-sfdx force:mdapi:listmetadata -m FlexiPage -u sfLogin > changesFlexiPages.json
+sfdx force:mdapi:listmetadata -m FlexiPage -u sfLogin --json > changesFlexiPages.json
 echo "Fetching Lightning Web Component Changes"
-sfdx force:mdapi:listmetadata -m LightningComponentBundle -u sfLogin > changesLWC.json
+sfdx force:mdapi:listmetadata -m LightningComponentBundle -u sfLogin --json > changesLWC.json
 echo "Fetching Profile Changes"
 sfdx force:data:soql:query -q "SELECT LastModifiedDate,Name,LastModifiedBy.Name FROM Profile ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changesProfile.json
 echo "Fetching Permissions Set Changes"
 sfdx force:data:soql:query -q "SELECT LastModifiedDate,Name,LastModifiedBy.Name FROM PermissionSet ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changesPermissionSet.json
 echo "Fetching Validation Rule Changes"
-sfdx force:mdapi:listmetadata -m ValidationRule -u sfLogin > changesValidationRules.json
+sfdx force:mdapi:listmetadata -m ValidationRule -u sfLogin --json > changesValidationRules.json
 
 node /action/commitChanges.js
