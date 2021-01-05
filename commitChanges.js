@@ -127,13 +127,13 @@ async function addChange(change, currentFile) {
         case "Profile":
         case "LWC":
             console.log("git add " + currentFile);
-            await exec('git add ' + currentFile);
+            await exec("git add '" + currentFile + "'");
             break;
         default:
             console.log("git add " + currentFile);
-            await exec('git add ' + currentFile);
+            await exec("git add " + currentFile);
             console.log("git add " + currentFile + "-meta.xml");
-            await exec('git add ' + currentFile + "-meta.xml");
+            await exec("git add " + currentFile + "-meta.xml");
             break;
     }
 }
