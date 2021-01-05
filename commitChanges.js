@@ -11,12 +11,24 @@ var changesAuraDefinitionBundle = JSON.parse(fs.readFileSync("changesAuraDefinit
 var changesStaticResource = JSON.parse(fs.readFileSync("changesStaticResource.json", "utf8")).result.records.map(function(change) { change.type = "StaticResource"; return change; });
 var changesFlowDefinitions = JSON.parse(fs.readFileSync("changesFlowDefinitions.json", "utf8")).result.records.map(function(change) { change.Name = change.ApiName; change.type = "FlowDefinition"; return change; });
 
+
+var changesFlexiPages = JSON.parse(fs.readFileSync("changesFlexiPages.json", "utf8")).result.records.map(function(change) { change.Name = change.fullName; change.type = "FlexiPage"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = changelastModifiedDate; return change; });
+var changesLWC = JSON.parse(fs.readFileSync("changesLWC.json", "utf8")).result.records.map(function(change) { change.Name = change.fullName; change.type = "LWC"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = changelastModifiedDate; return change; });
+var changesProfile = JSON.parse(fs.readFileSync("changesProfile.json", "utf8")).result.records.map(function(change) { change.type = "Profile"; return change; });
+var changesPermissionSet = JSON.parse(fs.readFileSync("changesPermissionSet.json", "utf8")).result.records.map(function(change) { change.type = "PermissionSet"; return change; });
+var changesValidationRules = JSON.parse(fs.readFileSync("changesValidationRules.json", "utf8")).result.records.map(function(change) { change.Name = change.fullName; change.type = "ValidationRule"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = changelastModifiedDate; return change; });
+
 var allChanges = changesApexClass.concat(changesApexComponent)
                                  .concat(changesApexPage)
                                  .concat(changesApexTrigger)
                                  .concat(changesAuraDefinitionBundle)
                                  .concat(changesStaticResource)
-                                 .concat(changesFlowDefinitions);
+                                 .concat(changesFlowDefinitions)
+                                 .concat(changesFlexiPages)
+                                 .concat(changesLWC)
+                                 .concat(changesProfile)
+                                 .concat(changesPermissionSet)
+                                 .concat(changesValidationRules);
 
 allChanges.sort(function(a, b) {
     if (a.LastModifiedDate > b.LastModifiedDate) {
@@ -60,6 +72,16 @@ function getPathFromType(type) {
             return "staticresources";
         case "FlowDefinition":
             return "flows";
+        case "FlexiPage":
+            return "flexipages";
+        case "LWC":
+            return "lwc";
+        case "Profile":
+            return "profiles";
+        case "PermissionSet":
+            return "permissionsets";
+        case "ValidationRule":
+            return "validationrules";
         default:
             throw new Error("unknown change type: " + type);
     }
@@ -81,6 +103,16 @@ function getExtensionFromType(type) {
             return ".resource";
         case "FlowDefinition":
             return ".flow";
+        case "FlexiPage":
+            return ".flexipage";
+        case "LWC":
+            return "/*";
+        case "Profile":
+            return ".profile";
+        case "PermissionSet":
+            return ".permissionset";
+        case "ValidationRule":
+            return ".validationrule";
         default:
             throw new Error("unknown change type: " + type);
     }
@@ -90,6 +122,7 @@ async function addChange(change, currentFile) {
     switch(change.type) {
         case "AuraDefinitionBundle":
         case "FlowDefinition":
+        case "LWC":
             console.log("git add " + currentFile);
             await exec('git add ' + currentFile);
             break;

@@ -10,7 +10,7 @@ LABEL "repository"="https://github.com/BrighterCloud/salesforce-pull-metadata-ac
 RUN apk add --update --no-cache git openssh ca-certificates openssl jq gettext xmlstarlet curl
 
 # install latest sfdx from npm
-RUN npm install sfdx-cli@7.45.1 --global
+RUN npm install sfdx-cli@7.82.1 --global
 RUN sfdx --version
 RUN sfdx plugins --core
 
