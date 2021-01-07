@@ -17,6 +17,8 @@ var changesLWC = JSON.parse(fs.readFileSync("changesLWC.json", "utf8")).result.m
 var changesProfile = JSON.parse(fs.readFileSync("changesProfile.json", "utf8")).result.records.map(function(change) { change.type = "Profile"; return change; });
 var changesPermissionSet = JSON.parse(fs.readFileSync("changesPermissionSet.json", "utf8")).result.records.map(function(change) { change.type = "PermissionSet"; return change; });
 var changesValidationRules = JSON.parse(fs.readFileSync("changesValidationRules.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "ValidationRule"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
+var changesCustomObject = JSON.parse(fs.readFileSync("changesCustomObject.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "CustomObject"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
+var changesCustomField = JSON.parse(fs.readFileSync("changesCustomField.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "CustomField"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
 
 var allChanges = changesApexClass.concat(changesApexComponent)
                                  .concat(changesApexPage)
@@ -28,7 +30,9 @@ var allChanges = changesApexClass.concat(changesApexComponent)
                                  .concat(changesLWC)
                                  .concat(changesProfile)
                                  .concat(changesPermissionSet)
-                                 .concat(changesValidationRules);
+                                 .concat(changesValidationRules)
+                                 .concat(changesCustomObject)
+                                 .concat(changesCustomField);
 
 allChanges.sort(function(a, b) {
     if (a.LastModifiedDate > b.LastModifiedDate) {
@@ -82,6 +86,9 @@ function getPathFromType(type) {
             return "permissionsets";
         case "ValidationRule":
             return "validationrules";
+        case "CustomObject":
+        case "CustomField":
+            return "objects";
         default:
             throw new Error("unknown change type: " + type);
     }
@@ -113,6 +120,9 @@ function getExtensionFromType(type) {
             return ".permissionset";
         case "ValidationRule":
             return ".validationrule";
+        case "CustomObject":
+        case "CustomField":
+            return ".object";
         default:
             throw new Error("unknown change type: " + type);
     }
@@ -128,6 +138,11 @@ async function addChange(change, currentFile) {
         case "LWC":
             console.log("git add " + currentFile);
             await exec("git add '" + currentFile + "'");
+            break;
+        case "CustomObject":
+        case "CustomField":
+            console.log("git add " + path.join("/github/workspace/metadata", change.fileName));
+            await exect("git add '" + path.join("/github/workspace/metadata", change.fileName) + "'");
             break;
         default:
             console.log("git add " + currentFile);

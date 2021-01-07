@@ -68,5 +68,9 @@ echo "Fetching Permissions Set Changes"
 sfdx force:data:soql:query -q "SELECT LastModifiedDate,Name,LastModifiedBy.Name FROM PermissionSet ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changesPermissionSet.json
 echo "Fetching Validation Rule Changes"
 sfdx force:mdapi:listmetadata -m ValidationRule -u sfLogin --json > changesValidationRules.json
+echo "Fetching Custom Object Changes"
+sfdx force:mdapi:listmetadata -m CustomObject -u sfLogin --json > changesCustomObject.json
+echo "Fetching Custom Field Changes"
+sfdx force:mdapi:listmetadata -m CustomField -u sfLogin --json > changesCustomField.json
 
 node /action/commitChanges.js
