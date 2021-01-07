@@ -19,6 +19,12 @@ var changesPermissionSet = JSON.parse(fs.readFileSync("changesPermissionSet.json
 var changesValidationRules = JSON.parse(fs.readFileSync("changesValidationRules.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "ValidationRule"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
 var changesCustomObject = JSON.parse(fs.readFileSync("changesCustomObject.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "CustomObject"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
 var changesCustomField = JSON.parse(fs.readFileSync("changesCustomField.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "CustomField"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
+var changesLayout = JSON.parse(fs.readFileSync("changesLayout.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "Layout"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
+
+var changesTerritory2 = JSON.parse(fs.readFileSync("changesTerritory2.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "Territory2"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
+var changesTerritory2Model = JSON.parse(fs.readFileSync("changesTerritory2Model.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "Territory2Model"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
+var changesTerritory2Type = JSON.parse(fs.readFileSync("changesTerritory2Type.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "Territory2Type"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
+var changesTerritory2Rule = JSON.parse(fs.readFileSync("changesTerritory2Rule.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "Territory2Rule"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
 
 var allChanges = changesApexClass.concat(changesApexComponent)
                                  .concat(changesApexPage)
@@ -32,7 +38,12 @@ var allChanges = changesApexClass.concat(changesApexComponent)
                                  .concat(changesPermissionSet)
                                  .concat(changesValidationRules)
                                  .concat(changesCustomObject)
-                                 .concat(changesCustomField);
+                                 .concat(changesCustomField)
+                                 .concat(changesLayout)
+                                 .concat(changesTerritory2)
+                                 .concat(changesTerritory2Model)
+                                 .concat(changesTerritory2Type)
+                                 .concat(changesTerritory2Rule);
 
 allChanges.sort(function(a, b) {
     if (a.LastModifiedDate > b.LastModifiedDate) {
@@ -84,8 +95,16 @@ function getPathFromType(type) {
             return "profiles";
         case "PermissionSet":
             return "permissionsets";
+        case "Territory2":
+        case "Territory2Model":
+        case "Territory2Rule":
+            return "territory2Models";
+        case "Territory2Type":
+            return "territory2Types";
         case "ValidationRule":
             return "validationrules";
+        case "Layout":
+            return "layouts";
         case "CustomObject":
         case "CustomField":
             return "objects";
@@ -114,6 +133,8 @@ function getExtensionFromType(type) {
             return ".flexipage";
         case "LWC":
             return "/*";
+        case "Layout":
+            return ".layout";
         case "Profile":
             return ".profile";
         case "PermissionSet":
@@ -123,6 +144,11 @@ function getExtensionFromType(type) {
         case "CustomObject":
         case "CustomField":
             return ".object";
+        case "Territory2":
+        case "Territory2Model":
+        case "Territory2Type":
+        case "Territory2Rule":
+            return "NotUsed";
         default:
             throw new Error("unknown change type: " + type);
     }
@@ -135,12 +161,17 @@ async function addChange(change, currentFile) {
         case "FlexiPage":
         case "PermissionSet":
         case "Profile":
+        case "Layout":
         case "LWC":
             console.log("git add " + currentFile);
             await exec("git add '" + currentFile + "'");
             break;
         case "CustomObject":
         case "CustomField":
+        case "Territory2":
+        case "Territory2Model":
+        case "Territory2Type":
+        case "Territory2Rule":
             console.log("git add " + path.join("/github/workspace/metadata", change.fileName));
             await exec("git add '" + path.join("/github/workspace/metadata", change.fileName) + "'");
             break;
