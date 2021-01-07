@@ -142,7 +142,7 @@ async function addChange(change, currentFile) {
         case "CustomObject":
         case "CustomField":
             console.log("git add " + path.join("/github/workspace/metadata", change.fileName));
-            await exect("git add '" + path.join("/github/workspace/metadata", change.fileName) + "'");
+            await exec("git add '" + path.join("/github/workspace/metadata", change.fileName) + "'");
             break;
         default:
             console.log("git add " + currentFile);
