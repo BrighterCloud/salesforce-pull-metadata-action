@@ -1,0 +1,26 @@
+name: Salesforce Backup
+
+on:
+  schedule:
+    - cron: '0 */4 * * *'
+
+jobs:
+  doBackup:
+    name: Backup to Github
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          ref: refs/heads/master
+      - name: backup
+        uses: BrighterCloud/salesforce-pull-metadata-action@master
+        env:
+          SF_CLIENT_ID: ${{ secrets.SF_CLIENT_ID_PRODUCTION }}
+          SF_USERNAME: ${{ secrets.SF_USERNAME_PRODUCTION }}
+          SF_PRIVATE_KEY: ${{ secrets.SF_PRIVATE_KEY_PRODUCTION }}
+          SF_INSTANCE_URL: https://test.salesforce.com/
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master
