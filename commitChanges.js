@@ -10,19 +10,29 @@ var changesApexTrigger = JSON.parse(fs.readFileSync("changesApexTrigger.json", "
 var changesAuraDefinitionBundle = JSON.parse(fs.readFileSync("changesAuraDefinitionBundle.json", "utf8")).result.records.map(function(change) { change.Name = change.DeveloperName; change.type = "AuraDefinitionBundle"; return change; });
 var changesStaticResource = JSON.parse(fs.readFileSync("changesStaticResource.json", "utf8")).result.records.map(function(change) { change.type = "StaticResource"; return change; });
 var changesFlowDefinitions = JSON.parse(fs.readFileSync("changesFlowDefinitions.json", "utf8")).result.records.map(function(change) { change.Name = change.ApiName; change.type = "FlowDefinition"; return change; });
-
-
-var changesFlexiPages = JSON.parse(fs.readFileSync("changesFlexiPages.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "FlexiPage"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
 var changesLWC = JSON.parse(fs.readFileSync("changesLWC.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "LWC"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
-var changesProfile = JSON.parse(fs.readFileSync("changesProfile.json", "utf8")).result.records.map(function(change) { change.type = "Profile"; return change; });
-var changesPermissionSet = JSON.parse(fs.readFileSync("changesPermissionSet.json", "utf8")).result.records.map(function(change) { change.type = "PermissionSet"; return change; });
-var changesValidationRules = JSON.parse(fs.readFileSync("changesValidationRules.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "ValidationRule"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
-var changesCustomObject = JSON.parse(fs.readFileSync("changesCustomObject.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "CustomObject"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
-var changesCustomField = JSON.parse(fs.readFileSync("changesCustomField.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "CustomField"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
-var changesLayout = JSON.parse(fs.readFileSync("changesLayout.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "Layout"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
 
-var changesTerritory2, changesTerritory2Model, changesTerritory2Type, changesTerritory2Rule;
-if (process.env.TERRITORIES) {
+var changesFlexiPages = [];
+var changesProfile = [];
+var changesPermissionSet = [];
+var changesValidationRules = [];
+var changesCustomObject = [];
+var changesCustomField = [];
+var changesLayout = [];
+var changesTerritory2 = [];
+var changesTerritory2Model = [];
+var changesTerritory2Type = [];
+var changesTerritory2Rule = [];
+
+if (process.env.EXTENDED) {
+    changesFlexiPages = JSON.parse(fs.readFileSync("changesFlexiPages.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "FlexiPage"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
+    changesProfile = JSON.parse(fs.readFileSync("changesProfile.json", "utf8")).result.records.map(function(change) { change.type = "Profile"; return change; });
+    changesPermissionSet = JSON.parse(fs.readFileSync("changesPermissionSet.json", "utf8")).result.records.map(function(change) { change.type = "PermissionSet"; return change; });
+    changesValidationRules = JSON.parse(fs.readFileSync("changesValidationRules.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "ValidationRule"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
+    changesCustomObject = JSON.parse(fs.readFileSync("changesCustomObject.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "CustomObject"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
+    changesCustomField = JSON.parse(fs.readFileSync("changesCustomField.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "CustomField"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
+    changesLayout = JSON.parse(fs.readFileSync("changesLayout.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "Layout"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
+
     changesTerritory2 = JSON.parse(fs.readFileSync("changesTerritory2.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "Territory2"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
     changesTerritory2Model = JSON.parse(fs.readFileSync("changesTerritory2Model.json", "utf8"));
     if (changesTerritory2Model.length > 1) {
@@ -39,11 +49,6 @@ if (process.env.TERRITORIES) {
         changesTerritory2Type = [changesTerritory2Type];
     }
     changesTerritory2Rule = JSON.parse(fs.readFileSync("changesTerritory2Rule.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "Territory2Rule"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
-} else {
-    changesTerritory2 = [];
-    changesTerritory2Model = [];
-    changesTerritory2Type = [];
-    changesTerritory2Rule = [];
 }
 
 var allChanges = changesApexClass.concat(changesApexComponent)

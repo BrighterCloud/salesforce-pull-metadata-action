@@ -57,25 +57,24 @@ sfdx force:data:soql:query -q "SELECT LastModifiedDate,Name,LastModifiedBy.Name 
 echo "Fetching FlowDefinition Changes"
 sfdx force:data:soql:query -q "SELECT LastModifiedDate,ApiName,LastModifiedBy FROM FlowDefinitionView ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changesFlowDefinitions.json
 
-
-echo "Fetching FlexiPage Changes"
-sfdx force:mdapi:listmetadata -m FlexiPage -u sfLogin --json > changesFlexiPages.json
 echo "Fetching Lightning Web Component Changes"
 sfdx force:mdapi:listmetadata -m LightningComponentBundle -u sfLogin --json > changesLWC.json
-echo "Fetching Profile Changes"
-sfdx force:data:soql:query -q "SELECT LastModifiedDate,Name,LastModifiedBy.Name FROM Profile ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changesProfile.json
-echo "Fetching Permissions Set Changes"
-sfdx force:data:soql:query -q "SELECT LastModifiedDate,Name,LastModifiedBy.Name FROM PermissionSet ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changesPermissionSet.json
-echo "Fetching Validation Rule Changes"
-sfdx force:mdapi:listmetadata -m ValidationRule -u sfLogin --json > changesValidationRules.json
-echo "Fetching Custom Object Changes"
-sfdx force:mdapi:listmetadata -m CustomObject -u sfLogin --json > changesCustomObject.json
-echo "Fetching Custom Field Changes"
-sfdx force:mdapi:listmetadata -m CustomField -u sfLogin --json > changesCustomField.json
-echo "Fetching Layout Changes"
-sfdx force:mdapi:listmetadata -m Layout -u sfLogin --json > changesLayout.json
 
-if [ -n "$TERRITORIES" ]; then
+if [ -n "$EXTENDED" ]; then
+  echo "Fetching FlexiPage Changes"
+  sfdx force:mdapi:listmetadata -m FlexiPage -u sfLogin --json > changesFlexiPages.json
+  echo "Fetching Profile Changes"
+  sfdx force:data:soql:query -q "SELECT LastModifiedDate,Name,LastModifiedBy.Name FROM Profile ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changesProfile.json
+  echo "Fetching Permissions Set Changes"
+  sfdx force:data:soql:query -q "SELECT LastModifiedDate,Name,LastModifiedBy.Name FROM PermissionSet ORDER BY LastModifiedDate DESC NULLS LAST" -u sfLogin --json > changesPermissionSet.json
+  echo "Fetching Validation Rule Changes"
+  sfdx force:mdapi:listmetadata -m ValidationRule -u sfLogin --json > changesValidationRules.json
+  echo "Fetching Custom Object Changes"
+  sfdx force:mdapi:listmetadata -m CustomObject -u sfLogin --json > changesCustomObject.json
+  echo "Fetching Custom Field Changes"
+  sfdx force:mdapi:listmetadata -m CustomField -u sfLogin --json > changesCustomField.json
+  echo "Fetching Layout Changes"
+  sfdx force:mdapi:listmetadata -m Layout -u sfLogin --json > changesLayout.json
   echo "Fetching Territory2 Changes"
   sfdx force:mdapi:listmetadata -m Territory2 -u sfLogin --json > changesTerritory2.json
   echo "Fetching Territory2 Model Changes"
