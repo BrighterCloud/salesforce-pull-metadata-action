@@ -75,13 +75,15 @@ sfdx force:mdapi:listmetadata -m CustomField -u sfLogin --json > changesCustomFi
 echo "Fetching Layout Changes"
 sfdx force:mdapi:listmetadata -m Layout -u sfLogin --json > changesLayout.json
 
-echo "Fetching Territory2 Changes"
-sfdx force:mdapi:listmetadata -m Territory2 -u sfLogin --json > changesTerritory2.json
-echo "Fetching Territory2 Model Changes"
-sfdx force:mdapi:listmetadata -m Territory2Model -u sfLogin --json > changesTerritory2Model.json
-echo "Fetching Territory2 Type Changes"
-sfdx force:mdapi:listmetadata -m Territory2Type -u sfLogin --json > changesTerritory2Type.json
-echo "Fetching Territory2 Rule Changes"
-sfdx force:mdapi:listmetadata -m Territory2Rule -u sfLogin --json > changesTerritory2Rule.json
+if [ -n "$TERRITORIES" ]; then
+  echo "Fetching Territory2 Changes"
+  sfdx force:mdapi:listmetadata -m Territory2 -u sfLogin --json > changesTerritory2.json
+  echo "Fetching Territory2 Model Changes"
+  sfdx force:mdapi:listmetadata -m Territory2Model -u sfLogin --json > changesTerritory2Model.json
+  echo "Fetching Territory2 Type Changes"
+  sfdx force:mdapi:listmetadata -m Territory2Type -u sfLogin --json > changesTerritory2Type.json
+  echo "Fetching Territory2 Rule Changes"
+  sfdx force:mdapi:listmetadata -m Territory2Rule -u sfLogin --json > changesTerritory2Rule.json
+fi
 
 node /action/commitChanges.js

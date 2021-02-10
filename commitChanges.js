@@ -21,22 +21,30 @@ var changesCustomObject = JSON.parse(fs.readFileSync("changesCustomObject.json",
 var changesCustomField = JSON.parse(fs.readFileSync("changesCustomField.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "CustomField"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
 var changesLayout = JSON.parse(fs.readFileSync("changesLayout.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "Layout"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
 
-var changesTerritory2 = JSON.parse(fs.readFileSync("changesTerritory2.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "Territory2"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
-var changesTerritory2Model = JSON.parse(fs.readFileSync("changesTerritory2Model.json", "utf8"));
-if (changesTerritory2Model.length > 1) {
-    changesTerritory2Model = changesTerritory2Model.result.map(function(change) { change.Name = change.fullName; change.type = "Territory2Model"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
+var changesTerritory2, changesTerritory2Model, changesTerritory2Type, changesTerritory2Rule;
+if (process.env.TERRITORIES) {
+    changesTerritory2 = JSON.parse(fs.readFileSync("changesTerritory2.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "Territory2"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
+    changesTerritory2Model = JSON.parse(fs.readFileSync("changesTerritory2Model.json", "utf8"));
+    if (changesTerritory2Model.length > 1) {
+        changesTerritory2Model = changesTerritory2Model.result.map(function(change) { change.Name = change.fullName; change.type = "Territory2Model"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
+    } else {
+        changesTerritory2Model.Name = changesTerritory2Model.fullName; changesTerritory2Model.type = "Territory2Model"; changesTerritory2Model.LastModifiedBy = changesTerritory2Model.lastModifiedByName; changesTerritory2Model.LastModifiedDate = changesTerritory2Model.lastModifiedDate;
+        changesTerritory2Model = [changesTerritory2Model];
+    }
+    changesTerritory2Type = JSON.parse(fs.readFileSync("changesTerritory2Type.json", "utf8"));
+    if (changesTerritory2Type.length > 1) {
+        changesTerritory2Type = changesTerritory2Type.result.map(function(change) { change.Name = change.fullName; change.type = "Territory2Type"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
+    } else {
+        changesTerritory2Type.Name = changesTerritory2Type.fullName; changesTerritory2Type.type = "Territory2Type"; changesTerritory2Type.LastModifiedBy = changesTerritory2Type.lastModifiedByName; changesTerritory2Type.LastModifiedDate = changesTerritory2Type.lastModifiedDate;
+        changesTerritory2Type = [changesTerritory2Type];
+    }
+    changesTerritory2Rule = JSON.parse(fs.readFileSync("changesTerritory2Rule.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "Territory2Rule"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
 } else {
-    changesTerritory2Model.Name = changesTerritory2Model.fullName; changesTerritory2Model.type = "Territory2Model"; changesTerritory2Model.LastModifiedBy = changesTerritory2Model.lastModifiedByName; changesTerritory2Model.LastModifiedDate = changesTerritory2Model.lastModifiedDate;
-    changesTerritory2Model = [changesTerritory2Model];
+    changesTerritory2 = [];
+    changesTerritory2Model = [];
+    changesTerritory2Type = [];
+    changesTerritory2Rule = [];
 }
-var changesTerritory2Type = JSON.parse(fs.readFileSync("changesTerritory2Type.json", "utf8"));
-if (changesTerritory2Type.length > 1) {
-    changesTerritory2Type = changesTerritory2Type.result.map(function(change) { change.Name = change.fullName; change.type = "Territory2Type"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
-} else {
-    changesTerritory2Type.Name = changesTerritory2Type.fullName; changesTerritory2Type.type = "Territory2Type"; changesTerritory2Type.LastModifiedBy = changesTerritory2Type.lastModifiedByName; changesTerritory2Type.LastModifiedDate = changesTerritory2Type.lastModifiedDate;
-    changesTerritory2Type = [changesTerritory2Type];
-}
-var changesTerritory2Rule = JSON.parse(fs.readFileSync("changesTerritory2Rule.json", "utf8")).result.map(function(change) { change.Name = change.fullName; change.type = "Territory2Rule"; change.LastModifiedBy = change.lastModifiedByName; change.LastModifiedDate = change.lastModifiedDate; return change; });
 
 var allChanges = changesApexClass.concat(changesApexComponent)
                                  .concat(changesApexPage)
