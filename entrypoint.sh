@@ -23,7 +23,7 @@ fi
 
 cd $current_dir
 
-sfdx force:mdapi:retrieve -r ./ -u sfLogin -k $PACKAGE_XML -w 20
+sfdx force:mdapi:retrieve -r ./ -u sfLogin -k "$PACKAGE_XML" -w 20
 
 if [ ! -f "unpackaged.zip" ]; then
   echo "failed to download metadata file"
