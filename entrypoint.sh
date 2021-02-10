@@ -23,7 +23,7 @@ fi
 
 cd $current_dir
 
-cp $PACKAGE_XML ./tmp-package.xml
+cp "$PACKAGE_XML" ./tmp-package.xml
 
 sfdx force:mdapi:retrieve -r ./ -u sfLogin -k ./tmp-package.xml -w 20
 
