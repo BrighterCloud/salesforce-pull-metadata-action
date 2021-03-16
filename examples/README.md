@@ -12,13 +12,15 @@ Create Connected a connected app with the following parameters / options:
 - Use Digital Signatures and upload public key from previous step
 - Uncheck Secret for Refresh Token Flow
 - Include scopes: full api refresh_token offline_access openid
+- Not 100% sure, but probably need to enable for device flow
 
 ## 3. Initial Grant for our App
 Copy Client ID and Client Secret from the connected app and open the following url in the browser, with adjusted parameters:
 
-https://login.salesforce.com/services/oauth2/authorize?client_id=[clientId]&redirect_uri=http://localhost&response_type=code
-This will redirect you to localhost, which is not running a server. Copy the code from the url into the following Url and open it in the browser:
-https://test.salesforce.com/services/oauth2/token?grant_type=authorization_code&code=[codeFromRedirect]&client_secret=[clientSecret]&redirect_uri=http://localhost&client_id=[clientId]
+https://[test|login].salesforce.com/services/oauth2/authorize?client_id=[clientId]&redirect_uri=http://localhost&response_type=code
+This will redirect you to localhost, which is not running a server. Copy the code from the url into the following Url and open postman and send a POST request to it:
+https://[test|login].salesforce.com/services/oauth2/token?grant_type=authorization_code&code=[codeFromRedirect]&client_secret=[clientSecret]&redirect_uri=http://localhost&client_id=[clientId]
+The managed app is now authorized.
 
 ## 4. Setup your Repo
 
